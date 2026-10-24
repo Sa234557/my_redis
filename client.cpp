@@ -35,6 +35,7 @@ enum {
     TAG_ERR = 1,
     TAG_STR = 2,
     TAG_INT = 3,
+    TAG_DBL = 4,
     TAG_ARR = 5,
 };
 
@@ -125,6 +126,16 @@ static void print_response(const uint8_t *&p, const uint8_t *end, int depth=0) {
         }
         indent();
         printf("(integer) %lld\n", (long long)val);
+        break;
+    }
+
+    case TAG_DBL: {
+        double val = 0;
+        if (p + 8 > end) { printf("(error: bad double)\n"); return; }
+        memcpy(&val, p, 8);
+        p += 8;
+        indent();
+        printf("(double) %g\n", val);
         break;
     }
 
